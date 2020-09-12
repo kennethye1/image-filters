@@ -9,32 +9,7 @@
  * Read in bitmap header data from stdin, and return a pointer to
  * a new Bitmap struct containing the important metadata for the image file.
  *
- * TODO: complete this function.
- *
- * Notes:
- *   1. Store header data in an array of unsigned char (essentially
- *      an array of bytes). Examples:
- *      on the stack,
- *          unsigned char data[10];
- *      on the heap,
- *          unsigned char *data = malloc(10);
- *
- *   2. Don't make any assumptions about the header size. You should read in
- *      BMP_HEADER_SIZE_OFFSET bytes first, and then the header size,
- *      and then use this to allocate enough space for the actual header.
- *
- *   3. You can use memcpy to transfer bytes to and from the Bitmap "header" field.
- *      You can even write these bytes to memory allocated for variables of other types!
- *      For example:
- *          unsigned char bytes[4];
- *          int x = 10;
- *          int y;
- *          memcpy(bytes, &x, 4);  // Copy the int x into bytes.
- *          memcpy(&y, bytes, 4);  // Copy the contents of bytes into y.
- *
- *   4. You can use either fread/fwrite or read/write to perform I/O operations here.
- *
- *   5. Make good use of the provided macros in bitmap.h to index into the "header" array.
+
  */
 Bitmap *read_header() {
     int height, width, header_size;
@@ -88,7 +63,7 @@ Bitmap *read_header() {
 
 /*
  * Write out bitmap metadata to stdout.
- * You may add extra fprintf calls to *stderr* here for debugging purposes.
+
  */
 void write_header(const Bitmap *bmp) {
     fwrite(bmp->header, bmp->headerSize, 1, stdout);
@@ -104,17 +79,8 @@ void free_bitmap(Bitmap *bmp) {
 
 /*
  * Update the bitmap header to record a resizing of the image.
- *
- * TODO: complete this function when working on the "scale" filter.
- *
- * Notes:
- *   1. As with read_header, use memcpy and the provided macros in bitmap.h.
- *
- *   2. bmp->header *must* be updated, as this is what's written out
- *      in write_header.
- *
- *   3. You may choose whether or not to also update bmp->width and bmp->height.
- *      This choice may depend on how you implement the scale filter.
+
+ 
  */
 void scale(Bitmap *bmp, int scale_factor) {
     bmp->scale_factor = scale_factor;
@@ -133,8 +99,6 @@ void scale(Bitmap *bmp, int scale_factor) {
  * The "main" function.
  *
  * Run a given filter function, and apply a scale factor if necessary.
- * You don't need to modify this function to make it work with any of
- * the filters for this assignment.
  */
 void run_filter(void (*filter)(Bitmap *), int scale_factor) {
     Bitmap *bmp = read_header();
@@ -154,7 +118,6 @@ void run_filter(void (*filter)(Bitmap *), int scale_factor) {
 
 /******************************************************************************
  * The gaussian blur and edge detection filters.
- * You should NOT modify any of the code below.
  *****************************************************************************/
 const int gaussian_kernel[3][3] = {
     {1, 2, 1},
