@@ -117,8 +117,6 @@ void edge_detection_filter(Bitmap *bmp) {
 }
 
 int main() {
-    // Run the filter program with copy_filter to process the pixels.
-    // You shouldn't need to change this implementation.
     run_filter(edge_detection_filter, 1);
     return 0;
 }
