@@ -1,31 +1,27 @@
-FLAGS = -Wall -std=gnu99 -g
+# You should change the value of PORT
+PORT = 55457
+CC = gcc
+CFLAGS =  -DPORT=${PORT} -g -Wall -std=gnu99 
 
-all: copy image_filter greyscale gaussian_blur edge_detection scale
 
-copy: copy.o bitmap.o
-	gcc ${FLAGS} -o $@ $^ -lm
+# Note that this Makefile populates the images/ and filters/ directories
+# for the server.
+all: image_server images filters
 
-edge_detection: edge_detection.o bitmap.o
-	gcc ${FLAGS} -o $@ $^ -lm
+image_server: image_server.o response.o request.o socket.o
+	${CC} ${CFLAGS} -o $@ $^
 
-image_filter: image_filter.o
-	gcc ${FLAGS} -o $@ $^ -lm
 
-greyscale: greyscale.o bitmap.o
-	gcc ${FLAGS} -o $@ $^ -lm
+.c.o: response.h request.h socket.h
+	${CC} ${CFLAGS}  -c $<
 
-gaussian_blur: gaussian_blur.o bitmap.o
-	gcc ${FLAGS} -o $@ $^ -lm
+images:
+	mkdir images
+	cp dog.bmp images
 
-scale: scale.o bitmap.o
-	gcc ${FLAGS} -o $@ $^ -lm
-
-%.o: %.c bitmap.h
-	gcc ${FLAGS} -c $<
+filters:
+	mkdir filters
+	cp copy filters
 
 clean:
-	rm *.o image_filter copy
-
-test:
-	mkdir images -p
-	./copy < dog.bmp > images/dog_copy.bmp
+	rm *.o image_server
